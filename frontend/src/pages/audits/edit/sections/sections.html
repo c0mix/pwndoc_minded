@@ -1,0 +1,24 @@
+<div>
+<breadcrumb buttons :title="$parent.audit.name">
+    <div slot="buttons">
+        <q-btn
+        color="negative"
+        class="q-mr-sm"
+        label="Delete"
+        no-caps
+        @click="deleteSection"
+        />
+        <q-btn color="positive" label="Save" no-caps style="width: 100px" @click="updateSection" />
+    </div>
+</breadcrumb>
+
+<div class="row q-col-gutter-md q-pa-md">
+    <div class="col-md-8 offset-md-2">
+        <q-card class="affix-relative-element">
+            <q-card-section>
+                <basic-editor affix v-model="section.text" />
+            </q-card-section>
+        </q-card>
+    </div>
+</div>
+</div>

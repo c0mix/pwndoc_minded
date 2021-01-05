@@ -1,0 +1,163 @@
+<div>
+<breadcrumb buttons :title="$parent.audit.name">
+    <div slot="buttons">
+        <q-btn
+        color="orange"
+        class="q-mr-sm"
+        label="Propose Creation / Update in Vulnerability Database"
+        no-caps
+        @click="backupFinding()"
+        />
+        <q-btn
+        color="negative"
+        class="q-mr-sm"
+        label="Delete"
+        no-caps
+        @click="deleteFinding()"
+        />
+        <q-btn color="positive" label="Save (ctrl+s)" no-caps @click="updateFinding()" />
+    </div>
+</breadcrumb>
+
+<div class="row q-col-gutter-md q-pt-md">
+    <q-tabs v-model="selectedTab" align="left" indicator-color="primary" class="bg-white full-width">
+        <q-tab name="definition" default label="Definition" />
+        <q-tab ref="proofs" name="proofs" label="Proofs"/>
+        <q-tab name="details" label="Details" />
+        <q-separator vertical />
+        <q-toggle label="Completed" v-model="finding.status" :true-value=0 :false-value=1 checked-icon="check" unchecked-icon="clear" color="green" />
+        <q-space />
+    </q-tabs>
+
+    <q-tab-panels v-model="selectedTab" animated class="bg-transparent col-md-8 offset-md-2" >
+        <q-tab-panel name="definition">
+            <q-card>
+                <q-card-section class="row q-col-gutter-md">
+                        <q-input class="col-md-8" label="Title *" stack-label v-model="finding.title" />
+                        <q-select 
+                        class="col-md-4"
+                        label="Type"
+                        v-model="finding.vulnType" 
+                        :options="vulnTypesLang" 
+                        option-value="name" 
+                        option-label="name" 
+                        emit-value 
+                        map-options
+                        options-sanitize
+                        />
+                        <q-field class="col-md-12" borderless label="Description" stack-label>
+                            <template v-slot="control">
+                                <basic-editor v-model="finding.description" />
+                            </template>
+                        </q-field>
+                        <q-field class="col-md-12" borderless label="Executive Summary" stack-label>
+                            <template v-slot="control">
+                                <basic-editor v-model="finding.observation" />
+                            </template>
+                        </q-field>
+                        <q-input
+                        class="col-md-12"
+                        label="References (One per line)"
+                        stack-label
+                        v-model="referencesString"
+                        type="textarea"
+                        />
+                </q-card-section>
+
+                <q-expansion-item 
+                label="Custom Fields of the category"
+                v-if="finding.customFields && finding.customFields.length > 0"
+                default-opened
+                header-class="bg-blue-grey-5 text-white" 
+                expand-icon-class="text-white">
+                    <q-card-section v-for="field of finding.customFields" :key="field.label">
+                        <q-field v-if="field.fieldType === 'text'" borderless :label="field.label" stack-label>
+                            <template v-slot="control">
+                                <basic-editor v-model="field.text" />
+                            </template>
+                        </q-field>
+                        <q-input
+                        v-if="field.fieldType === 'input'"
+                        :label='field.label'
+                        stack-label
+                        v-model="field.text"
+                        />
+                    </q-card-section>
+                </q-expansion-item>
+
+            </q-card>
+        </q-tab-panel>
+        <q-tab-panel name="proofs">
+            <div class="q-col-gutter-md row">
+                <div class="col-md-12">
+                    <q-card class="affix-relative-element">
+                        <q-card-section>
+                            <basic-editor affix v-model="finding.poc" />
+                        </q-card-section>
+                    </q-card>
+                </div>
+            </div>
+        </q-tab-panel>
+        <q-tab-panel name="details">
+            <q-card>
+                <q-card-section>Affected Assets</q-card-section>
+                <q-separator />
+                <q-card-section>
+                    <q-field borderless>
+                        <template v-slot="control">
+                            <basic-editor v-model="finding.scope" :toolbar="['format', 'marks', 'list']" />
+                        </template>
+                    </q-field>
+                </q-card-section>
+            </q-card>
+            <q-card class="q-mt-md">
+                <div class="col-md-12">
+                    <cvss-calculator 
+                    :cvssString="finding.cvssv3"
+                    :cvssScore="finding.cvssScore"
+                    :cvssSeverity="finding.cvssSeverity"
+                    @cvssChange="finding.cvssv3 = $event"
+                    @cvssScoreChange="finding.cvssScore = $event"
+                    @cvssSeverityChange="finding.cvssSeverity = $event"
+                    />
+                </div>
+            </q-card>
+            <q-card class="q-mt-md">
+            <q-card-section>Course of actions</q-card-section>
+            <q-separator />
+            <q-card-section>
+                <div class="q-col-gutter-md row">
+                    <q-select
+                    label="Effort to Fix"
+                    stack-label
+                    class="col-md-6"
+                    v-model="finding.remediationComplexity"
+                    :options="[{label: 'Low', value: 1},{label: 'Medium', value: 2},{label: 'High', value: 3}]"
+                    map-options
+                    emit-value
+                    options-sanitize
+                    />
+                    <q-select
+                    label="Priority"
+                    stack-label
+                    class="col-md-6"
+                    v-model="finding.priority"
+                    :options="[{label: 'Low', value: 1},{label: 'Medium', value: 2},{label: 'High', value: 3}]"
+                    map-options
+                    emit-value
+                    options-sanitize
+                    />
+                </div>
+            </q-card-section>
+            <q-card-section>
+                <q-field class="col-md-12" borderless label="Remediation" stack-label>
+                    <template v-slot="control">
+                        <basic-editor v-model="finding.remediation" />
+                    </template>
+                </q-field>
+            </q-card-section>
+        </q-card>
+    </q-tab-panel>
+    </q-tab-panels>
+</div>
+</div>

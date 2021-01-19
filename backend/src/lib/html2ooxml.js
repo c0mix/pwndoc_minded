@@ -61,20 +61,20 @@ function html2ooxml(html) {
                 list_state.push('number')
             }
             else if (tag === "li") {
-                //cRunProperties.style = "Paragrafoelenco Carattere"
+                cRunProperties.style = "Paragrafoelenco"
                 var level = list_state.length - 1
                 if (level >= 0 && list_state[level] === 'bullet') {
                     //cParagraphProperties.style = 'Paragrafoelenco'
                     //cRunProperties.style = "Paragrafoelenco Carattere"
-                    cParagraphProperties.numbering = {reference: 19, level: level}                  
+                    cParagraphProperties.numbering = {reference: 34, level: level}                  
                 }
                 else if (level >= 0 && list_state[level] === 'number') {
                     //cParagraphProperties.style = 'Paragrafoelenco'
                     //cRunProperties.style = "Paragrafoelenco Carattere"
-                    cParagraphProperties.numbering = {reference: 41, level: level}
+                    cParagraphProperties.numbering = {reference: 37, level: level}
                 }
                 else
-                    cParagraphProperties.numbering = {reference: 41, level: 0}
+                    cParagraphProperties.numbering = {reference: 37, level: 0}
             }
             else if (tag === "code") {
                 cRunProperties.style = "CodeChar"

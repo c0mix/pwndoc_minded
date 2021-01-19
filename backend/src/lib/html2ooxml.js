@@ -66,12 +66,14 @@ function html2ooxml(html) {
                 if (level >= 0 && list_state[level] === 'bullet') {
                     //cParagraphProperties.style = 'Paragrafoelenco'
                     //cRunProperties.style = "Paragrafoelenco Carattere"
-                    cParagraphProperties.numbering = {reference: 34, level: level}                  
+                    //cParagraphProperties.numbering = {reference: 19, level: level}  //19 indica l'id del bullet nei report inglesi
+                    cParagraphProperties.numbering = {reference: 34, level: level} //34 indica l'id del bullet nei report italiani                  
                 }
                 else if (level >= 0 && list_state[level] === 'number') {
                     //cParagraphProperties.style = 'Paragrafoelenco'
                     //cRunProperties.style = "Paragrafoelenco Carattere"
-                    cParagraphProperties.numbering = {reference: 37, level: level}
+                    //cParagraphProperties.numbering = {reference: 41, level: level} //41 indica l'id dell'elenco numerato nei report inglesi
+                    cParagraphProperties.numbering = {reference: 37, level: level} //37 indica l'id dell'elenco numerato nei report italiani
                 }
                 else
                     cParagraphProperties.numbering = {reference: 37, level: 0}

@@ -22,7 +22,7 @@
                 options-sanitize
                 />
                 <q-select
-                label="Company"
+                label="Customer Name"
                 v-model="audit.company"
                 :options="companies"
                 option-value="_id"
@@ -85,7 +85,7 @@
                     </template>
                 </q-input>
                 <q-select 
-                label="Scope"
+                label="Application Name"
                 stack-label
                 v-model="audit.scope"
                 multiple

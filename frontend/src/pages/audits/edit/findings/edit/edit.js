@@ -35,10 +35,14 @@ export default {
 
         // save on ctrl+s
         document.addEventListener('keydown', this._listener, false);
+        // automatically save every 5s
+        this.interval = setInterval(() => this.updateFinding(), 5000);
     },
 
     destroyed: function() {
         document.removeEventListener('keydown', this._listener, false);
+        // stop the autosave interval
+        clearInterval(this.interval)
     },
 
     beforeRouteLeave (to, from , next) {

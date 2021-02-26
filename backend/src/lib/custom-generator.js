@@ -69,6 +69,20 @@ expressions.filters.changeID = function (input, prefix) {
     return input.replace("IDX-", prefix);
 }
 
+// Sort findings by supplied field: {#findings | sortFindings: 'identifier':1}{/}
+// order: 1 = ascending, -1 = descending
+expressions.filters.sortFindings = function (input, field, order) {
+    //invalid order sort ascending
+    if(order != 1 && order != -1) order = 1;
+
+    const sorted = input.sort((a,b) => {
+        o = a[field] < b[field] ? -1 : (a[field] > b[field] ? 1 : 0)
+        //multiply by order so that if is descending (-1) will reverse the values
+        return o * order;
+    })    
+    return sorted;
+}
+
 // *** Custome Angular expressions filters ***
 var filters = {};
 

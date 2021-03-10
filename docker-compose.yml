@@ -22,7 +22,7 @@ services:
       - mongodb
     restart: always
     ports:
-      - 4242:4242
+      - 127.0.0.1:4242:4242
     links:
       - mongodb
     networks: 
@@ -34,7 +34,7 @@ services:
     container_name: pwndoc-frontend
     restart: always
     ports:
-      - 8443:8443
+      - 127.0.0.1:8443:8443
     networks:
       - backend
 

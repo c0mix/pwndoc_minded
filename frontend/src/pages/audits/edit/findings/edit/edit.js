@@ -151,12 +151,12 @@ export default {
             AuditService.updateFinding(this.auditId, this.findingId, this.finding)
             .then(() => {
                 this.findingOrig = this.$_.cloneDeep(this.finding);
-                Notify.create({
-                    message: 'Finding updated successfully',
-                    color: 'positive',
-                    textColor:'white',
-                    position: 'top-right'
-                })
+                // Notify.create({
+                //     message: 'Finding updated successfully',
+                //     color: 'positive',
+                //     textColor:'white',
+                //     position: 'top-right'
+                // })
             })
             .catch((err) => {
                 Notify.create({
